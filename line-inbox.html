@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Line Inbox">
+<title>📥 Line Inbox</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap');
+  :root {
+    --bg:#f7f6f3;--surface:#fff;--border:#e3e2e0;--text:#37352f;--muted:#9b9a97;--faint:#d1cfc9;
+    --blue:#2eaadc;--blue-dark:#1a8ab5;
+    --red:#ef4444;--yellow:#f59e0b;--green:#22c55e;--purple:#a855f7;
+    --font:'IBM Plex Sans Thai','Sarabun',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+  .app{max-width:640px;margin:0 auto;padding:20px 16px 100px;}
+
+  /* HEADER */
+  .header{text-align:center;margin-bottom:20px;}
+  .header h1{font-size:22px;font-weight:700;}
+  .header .sub{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5;}
+  .clock{font-size:32px;font-weight:700;color:var(--blue);margin-top:6px;letter-spacing:2px;}
+
+  /* ALARM NOTICE */
+  .alarm-notice{background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:11px 14px;margin-bottom:14px;font-size:12.5px;color:#0369a1;display:flex;align-items:flex-start;gap:8px;line-height:1.55;}
+  .alarm-notice .ico{font-size:18px;flex-shrink:0;margin-top:1px;}
+
+  /* REMINDER BANNER */
+  .reminder{background:#fffbeb;border:1.5px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
+  .reminder.hidden{display:none;}
+  .reminder-icon{font-size:24px;flex-shrink:0;}
+  .reminder-text{font-size:14px;color:#92400e;line-height:1.55;}
+  .reminder-text strong{display:block;font-size:15px;margin-bottom:2px;}
+
+  /* HOW TO SAVE — collapsible */
+  .guide-toggle{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-bottom:10px;font-family:var(--font);}
+  .guide-toggle-label{font-size:14px;font-weight:600;color:var(--text);}
+  .guide-toggle-icon{font-size:18px;color:var(--muted);transition:transform 0.2s;}
+  .guide-toggle.open .guide-toggle-icon{transform:rotate(180deg);}
+  .guide-body{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:14px;display:none;}
+  .guide-body.open{display:block;}
+  .guide-step{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid #f1f0ef;}
+  .guide-step:last-child{border-bottom:none;}
+  .guide-step-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .guide-step-text{font-size:13.5px;line-height:1.6;color:var(--text);}
+  .guide-step-text em{background:#fef3c7;padding:1px 6px;border-radius:4px;font-style:normal;font-size:12.5px;color:#92400e;}
+  .guide-os{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;margin-top:4px;}
+
+  /* INPUT */
+  .input-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:14px;}
+  .input-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .input-row{display:flex;gap:8px;align-items:flex-end;}
+  textarea#new-msg{flex:1;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-family:var(--font);font-size:14px;color:var(--text);resize:none;outline:none;line-height:1.6;min-height:56px;transition:border 0.15s;background:#fafaf8;}
+  textarea#new-msg:focus{border-color:var(--blue);background:#fff;}
+  textarea#new-msg::placeholder{color:var(--faint);}
+  .add-btn{background:var(--blue);color:white;border:none;border-radius:10px;padding:0 18px;height:56px;font-size:26px;cursor:pointer;transition:background 0.15s;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+  .add-btn:active{background:var(--blue-dark);transform:scale(0.95);}
+
+  /* COUNTER */
+  .counter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+  .counter{font-size:13px;color:var(--muted);}
+  .counter strong{color:var(--text);font-weight:600;}
+  .clear-btn{font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;font-family:var(--font);}
+  .clear-btn:active{background:#f1f0ef;color:var(--red);}
+
+  /* INBOX */
+  .inbox{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+  .msg-card{background:var(--surface);border-radius:10px;border:1px solid var(--border);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;animation:slideIn 0.2s ease;}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+  .msg-num{font-size:11px;color:var(--faint);font-weight:600;flex-shrink:0;padding-top:2px;min-width:18px;}
+  .msg-body{flex:1;font-size:14px;line-height:1.65;white-space:pre-wrap;word-break:break-word;}
+  .msg-time{font-size:11px;color:var(--faint);flex-shrink:0;padding-top:2px;}
+  .msg-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:20px;padding:0 2px;flex-shrink:0;line-height:1;-webkit-tap-highlight-color:transparent;}
+  .msg-del:active{color:var(--red);}
+
+  /* EMPTY */
+  .empty{text-align:center;padding:36px 20px;color:var(--faint);}
+  .empty-icon{font-size:40px;margin-bottom:8px;}
+  .empty-text{font-size:14px;line-height:1.6;}
+
+  /* SUMMARIZE */
+  .sum-btn{width:100%;padding:16px;background:var(--blue);color:white;border:none;border-radius:12px;font-family:var(--font);font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent;}
+  .sum-btn:active{background:var(--blue-dark);}
+  .sum-btn:disabled{background:var(--faint);cursor:not-allowed;}
+
+  /* RESULT */
+  .result-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:12px;}
+  .result-header{padding:13px 16px;background:#f0f9ff;border-bottom:1px solid #bae6fd;display:flex;justify-content:space-between;align-items:center;}
+  .result-title{font-size:13px;font-weight:700;color:#0c4a6e;}
+  .result-time-label{font-size:11px;color:#7dd3fc;}
+  .result-body{padding:14px;}
+  .block{border-radius:8px;padding:12px 13px;margin-bottom:8px;border-left:3px solid;}
+  .block:last-child{margin-bottom:0;}
+  .b-red{background:#fef2f2;border-color:var(--red);}
+  .b-yellow{background:#fffbeb;border-color:var(--yellow);}
+  .b-green{background:#f0fdf4;border-color:var(--green);}
+  .b-gray{background:#f7f6f3;border-color:var(--muted);}
+  .b-purple{background:#faf5ff;border-color:var(--purple);}
+  .block-head{font-size:12px;font-weight:700;margin-bottom:5px;}
+  .block-content{font-size:13.5px;line-height:1.75;white-space:pre-wrap;}
+  .loading{text-align:center;padding:28px;color:var(--muted);font-size:14px;}
+  .dot-anim::after{content:'';animation:dots 1.2s infinite;}
+  @keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
+  .copy-result-btn{width:100%;padding:11px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-family:var(--font);font-size:13px;color:#0369a1;cursor:pointer;margin-top:8px;}
+  .copy-result-btn:active{background:#e0f2fe;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="clock" id="clock">00:00</div>
+    <h1>📥 Line Inbox</h1>
+    <div class="sub">ทิ้งข้อความค้างไว้ได้เรื่อยๆ<br>Claude สรุปให้ตอน 21:00 และ 09:00</div>
+  </div>
+
+  <!-- ALARM NOTICE -->
+  <div class="alarm-notice">
+    <div class="ico">⏰</div>
+    <div>
+      <strong style="display:block;font-weight:700;margin-bottom:2px;">ตั้ง Alarm ในมือถือด้วยนะคะ</strong>
+      Browser บนมือถือไม่สามารถส่ง notification ได้ — ตั้ง Alarm ไว้ที่ <strong>21:00</strong> และ <strong>09:00</strong> แล้วเปิดแอปนี้มากดสรุปเองครับ
+    </div>
+  </div>
+
+  <!-- REMINDER BANNER (แสดงเมื่อเปิดตรงเวลา) -->
+  <div class="reminder hidden" id="reminder">
+    <div class="reminder-icon" id="reminder-icon">🔔</div>
+    <div class="reminder-text">
+      <strong id="reminder-title"></strong>
+      <span id="reminder-body"></span>
+    </div>
+  </div>
+
+  <!-- HOW TO SAVE FROM LINE -->
+  <button class="guide-toggle" id="guide-toggle" onclick="toggleGuide()">
+    <span class="guide-toggle-label">📖 วิธี Copy ข้อความจาก Line มาใส่ที่นี่</span>
+    <span class="guide-toggle-icon">▼</span>
+  </button>
+  <div class="guide-body" id="guide-body">
+
+    <div class="guide-os">📱 iPhone</div>
+    <div class="guide-step">
+      <div class="guide-step-num">1</div>
+      <div class="guide-step-text">เปิด Line → กดค้างที่ข้อความที่ต้องการ → เลือก <em>คัดลอก</em></div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-step-num">2</div>
+      <div class="guide-step-text">สลับมาที่แอปนี้ (Safari) → แตะที่ช่องข้อความ → <em>วาง</em></div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-step-num">3</div>
+      <div class="guide-step-text">กดปุ่ม <em>+</em> เพื่อบันทึกไว้ → กลับไป Line ต่อได้เลย</div>
+    </div>
+
+    <div class="guide-os" style="margin-top:12px;">🤖 Android</div>
+    <div class="guide-step">
+      <div class="guide-step-num">1</div>
+      <div class="guide-step-text">เปิด Line → กดค้างที่ข้อความ → เลือก <em>คัดลอกข้อความ</em></div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-step-num">2</div>
+      <div class="guide-step-text">เปิด Chrome → เปิดแอปนี้ → แตะช่องข้อความ → <em>วาง</em></div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-step-num">3</div>
+      <div class="guide-step-text">กด <em>+</em> เพื่อบันทึก → สลับกลับ Line ได้เลย</div>
+    </div>
+
+    <div class="guide-os" style="margin-top:12px;">💡 Tip — ไฟล์ที่ส่งใน Line</div>
+    <div class="guide-step">
+      <div class="guide-step-num">★</div>
+      <div class="guide-step-text">ถ้าเป็นไฟล์ PDF/รูป ให้พิมพ์สรุปสั้นๆ ว่า <em>"ไฟล์ contract วง XX จาก Label A — รอ approve"</em> แล้ว paste มาแทนได้ครับ</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-step-num">★</div>
+      <div class="guide-step-text">ถ้าเป็น Voice Note ให้พิมพ์ใจความสั้นๆ ว่าใครส่งมาและเรื่องอะไร ก็พอครับ</div>
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <div class="input-card">
+    <div class="input-label">📲 วางข้อความจาก Line ที่นี่</div>
+    <div class="input-row">
+      <textarea id="new-msg" placeholder="Copy จาก Line → วางที่นี่ → กด +" rows="2"></textarea>
+      <button class="add-btn" onclick="addMsg()">+</button>
+    </div>
+  </div>
+
+  <!-- COUNTER -->
+  <div class="counter-row">
+    <div class="counter">ค้างอยู่: <strong id="count">0</strong> รายการ</div>
+    <button class="clear-btn" onclick="clearAll()">🗑 ล้างทั้งหมด</button>
+  </div>
+
+  <!-- INBOX LIST -->
+  <div class="inbox" id="inbox">
+    <div class="empty" id="empty-state">
+      <div class="empty-icon">💬</div>
+      <div class="empty-text">ยังไม่มีข้อความค้าง<br>Copy จาก Line แล้วกด + ได้เลย</div>
+    </div>
+  </div>
+
+  <!-- SUMMARIZE -->
+  <button class="sum-btn" id="sum-btn" onclick="summarize()" disabled>
+    🤖 สรุปทั้งหมดด้วย Claude
+  </button>
+
+  <!-- RESULT -->
+  <div id="result-area"></div>
+
+</div>
+<script>
+// ── Storage ──────────────────────────────────
+const STORE_KEY='line_inbox_msgs';
+let msgs=[];
+function save(){try{localStorage.setItem(STORE_KEY,JSON.stringify(msgs));}catch(e){}}
+function load(){try{const d=localStorage.getItem(STORE_KEY);if(d)msgs=JSON.parse(d);}catch(e){msgs=[];}}
+
+// ── Guide toggle ──────────────────────────────
+function toggleGuide(){
+  const t=document.getElementById('guide-toggle');
+  const b=document.getElementById('guide-body');
+  t.classList.toggle('open');
+  b.classList.toggle('open');
+}
+
+// ── Clock & Reminder ─────────────────────────
+function updateClock(){
+  const now=new Date();
+  const h=now.getHours(),m=now.getMinutes();
+  document.getElementById('clock').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+  checkReminder(h,m);
+}
+setInterval(updateClock,1000);
+updateClock();
+
+function checkReminder(h,m){
+  const el=document.getElementById('reminder');
+  const title=document.getElementById('reminder-title');
+  const body=document.getElementById('reminder-body');
+  const icon=document.getElementById('reminder-icon');
+  const isEvening=(h===21&&m<30);
+  const isMorning=(h===9&&m<30);
+  if((isEvening||isMorning)&&msgs.length>0){
+    icon.textContent=isEvening?'🌙':'☀️';
+    title.textContent=isEvening?'ได้เวลาสรุปก่อนนอน!':'สรุปเช้าก่อนเริ่มวัน!';
+    body.textContent=` มีข้อความค้างอยู่ ${msgs.length} รายการ — กดปุ่มสรุปด้านล่างได้เลยค่ะ`;
+    el.classList.remove('hidden');
+  } else {
+    el.classList.add('hidden');
+  }
+}
+
+// ── Add ───────────────────────────────────────
+function addMsg(){
+  const ta=document.getElementById('new-msg');
+  const text=ta.value.trim();
+  if(!text)return;
+  const now=new Date();
+  msgs.unshift({id:Date.now(),text,time:String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')});
+  save();ta.value='';ta.style.height='';render();ta.focus();
+}
+document.getElementById('new-msg').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addMsg();}});
+document.getElementById('new-msg').addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,160)+'px';});
+
+function deleteMsg(id){msgs=msgs.filter(m=>m.id!==id);save();render();}
+function clearAll(){
+  if(!msgs.length)return;
+  if(confirm(`ล้างข้อความทั้ง ${msgs.length} รายการ?`)){msgs=[];save();render();document.getElementById('result-area').innerHTML='';}
+}
+
+// ── Render ────────────────────────────────────
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function render(){
+  const inbox=document.getElementById('inbox');
+  const empty=document.getElementById('empty-state');
+  document.getElementById('count').textContent=msgs.length;
+  document.getElementById('sum-btn').disabled=msgs.length===0;
+  if(!msgs.length){inbox.innerHTML='';inbox.appendChild(empty);return;}
+  empty.remove&&empty.remove();
+  inbox.innerHTML=msgs.map((m,i)=>`
+    <div class="msg-card">
+      <div class="msg-num">${msgs.length-i}</div>
+      <div class="msg-body">${escHtml(m.text)}</div>
+      <div class="msg-time">${m.time}</div>
+      <button class="msg-del" onclick="deleteMsg(${m.id})">×</button>
+    </div>`).join('');
+}
+
+// ── Summarize ─────────────────────────────────
+async function summarize(){
+  if(!msgs.length)return;
+  const btn=document.getElementById('sum-btn');
+  const area=document.getElementById('result-area');
+  btn.disabled=true;
+  area.innerHTML='<div class="loading"><span class="dot-anim">🤖 Claude กำลังสรุป</span></div>';
+
+  const now=new Date();
+  const thDays=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+  const thMonths=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const dateStr=`${thDays[now.getDay()]} ${now.getDate()} ${thMonths[now.getMonth()]} ${now.getFullYear()+543}`;
+  const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+
+  const dump=msgs.slice().reverse().map((m,i)=>`[${i+1}] (${m.time}) ${m.text}`).join('\n\n');
+
+  const prompt=`คุณคือ Chief of Staff AI ของ VP Commercial & Revenue บริษัทค่ายเพลง 4 ค่าย 35 วง
+วันนี้: ${dateStr} เวลา ${timeStr} น.
+
+ด้านล่างคือข้อความจาก Line ที่ยังค้างอยู่ยังไม่ได้ตอบหรือดำเนินการ:
+
+${dump}
+
+ตอบเป็น JSON เท่านั้น ไม่มี markdown ไม่มี backtick:
+{"red":"🔴 ต้องดำเนินการวันนี้\\n- ...","yellow":"🟡 ต้อง Follow Up ใน 3 วัน\\n- ...","green":"🟢 รับทราบ ไม่ต้องทำอะไร\\n- ...","gray":"❓ ข้อมูลไม่ครบ ต้องถามใคร\\n- ...","purple":"💰 Revenue / Deal Flags\\n- ..."}
+
+Rules: ไม่แน่ใจ urgency → จัด yellow ก่อน | ภาษาไทย กระชับ | หมวดที่ไม่มีข้อมูลใส่ "ไม่มี" | เรียงจาก urgent มากไปน้อย`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const raw=data.content?.map(c=>c.text||'').join('').trim();
+    let parsed;
+    try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){parsed=null;}
+    if(parsed){
+      area.innerHTML=`
+        <div class="result-card">
+          <div class="result-header">
+            <div class="result-title">📊 สรุปจาก Claude</div>
+            <div class="result-time-label">${dateStr} · ${timeStr}</div>
+          </div>
+          <div class="result-body">
+            <div class="block b-red"><div class="block-head">🔴 ต้องดำเนินการวันนี้</div><div class="block-content">${escHtml(parsed.red||'ไม่มี')}</div></div>
+            <div class="block b-yellow"><div class="block-head">🟡 ต้อง Follow Up ใน 3 วัน</div><div class="block-content">${escHtml(parsed.yellow||'ไม่มี')}</div></div>
+            <div class="block b-green"><div class="block-head">🟢 รับทราบ — ไม่ต้องทำอะไร</div><div class="block-content">${escHtml(parsed.green||'ไม่มี')}</div></div>
+            <div class="block b-gray"><div class="block-head">❓ ข้อมูลไม่ครบ</div><div class="block-content">${escHtml(parsed.gray||'ไม่มี')}</div></div>
+            <div class="block b-purple"><div class="block-head" style="color:#6b21a8;">💰 Revenue / Deal Flags</div><div class="block-content">${escHtml(parsed.purple||'ไม่มี')}</div></div>
+          </div>
+        </div>
+        <button class="copy-result-btn" onclick="copyResult()">📋 Copy สรุปนี้</button>`;
+      window._lastResult=parsed;
+    } else {
+      area.innerHTML=`<div class="result-card"><div class="result-body"><pre style="font-size:13px;white-space:pre-wrap;">${escHtml(raw)}</pre></div></div>`;
+    }
+  }catch(err){
+    area.innerHTML=`<div class="result-card"><div class="result-body" style="color:var(--red);font-size:13px;">เกิดข้อผิดพลาด: ${err.message}</div></div>`;
+  }
+  btn.disabled=msgs.length===0;
+}
+
+function copyResult(){
+  const p=window._lastResult;if(!p)return;
+  const txt=[p.red,p.yellow,p.green,p.gray,p.purple].join('\n\n');
+  navigator.clipboard.writeText(txt).then(()=>{
+    const b=document.querySelector('.copy-result-btn');
+    b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy สรุปนี้',2000);
+  });
+}
+
+load();render();
+</script>
+</body>
+</html>
