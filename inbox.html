@@ -18,33 +18,19 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
   .app{max-width:640px;margin:0 auto;padding:20px 16px 100px;}
-
-  /* HEADER */
   .header{text-align:center;margin-bottom:20px;}
   .header h1{font-size:22px;font-weight:700;}
   .header .sub{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.5;}
   .clock{font-size:32px;font-weight:700;color:var(--blue);margin-top:6px;letter-spacing:2px;}
-  .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--green);background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:3px 10px;margin-top:6px;}
-  .sync-badge.error{color:var(--red);background:#fef2f2;border-color:#fecaca;}
-  .sync-badge.loading{color:var(--muted);background:#f7f6f3;border-color:var(--border);}
-
-  /* SETUP BANNER */
-  .setup-banner{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:16px;}
-  .setup-banner.hidden{display:none;}
-  .setup-title{font-size:14px;font-weight:700;color:#92400e;margin-bottom:6px;}
-  .setup-input{width:100%;border:1.5px solid #f59e0b;border-radius:8px;padding:9px 12px;font-family:var(--font);font-size:13px;color:var(--text);outline:none;background:#fff;margin-bottom:8px;}
-  .setup-btn{background:#f59e0b;color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;width:100%;}
-  .setup-btn:active{background:#d97706;}
-  .setup-hint{font-size:11.5px;color:#92400e;margin-top:6px;line-height:1.55;}
-
-  /* REMINDER */
+  .sync-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;border-radius:20px;padding:3px 10px;margin-top:6px;border:1px solid;}
+  .sync-ok{color:#166534;background:#f0fdf4;border-color:#bbf7d0;}
+  .sync-err{color:var(--red);background:#fef2f2;border-color:#fecaca;}
+  .sync-load{color:var(--muted);background:#f7f6f3;border-color:var(--border);}
   .reminder{background:#fffbeb;border:1.5px solid #f59e0b;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
   .reminder.hidden{display:none;}
   .reminder-icon{font-size:24px;flex-shrink:0;}
   .reminder-text{font-size:14px;color:#92400e;line-height:1.55;}
   .reminder-text strong{display:block;font-size:15px;margin-bottom:2px;}
-
-  /* INPUT */
   .input-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:14px;}
   .input-label{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
   .input-row{display:flex;gap:8px;align-items:flex-end;}
@@ -54,15 +40,11 @@
   .add-btn{background:var(--blue);color:white;border:none;border-radius:10px;padding:0 18px;height:56px;font-size:26px;cursor:pointer;flex-shrink:0;-webkit-tap-highlight-color:transparent;transition:background 0.15s;}
   .add-btn:active{background:var(--blue-dark);}
   .add-btn:disabled{background:var(--faint);cursor:not-allowed;}
-
-  /* COUNTER */
   .counter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
   .counter{font-size:13px;color:var(--muted);}
   .counter strong{color:var(--text);font-weight:600;}
   .clear-btn{font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;font-family:var(--font);}
   .clear-btn:active{background:#f1f0ef;color:var(--red);}
-
-  /* INBOX */
   .inbox{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
   .msg-card{background:var(--surface);border-radius:10px;border:1px solid var(--border);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;animation:slideIn 0.2s ease;}
   @keyframes slideIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
@@ -73,19 +55,13 @@
   .msg-date{font-size:10px;color:var(--faint);}
   .msg-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:20px;padding:0;line-height:1;-webkit-tap-highlight-color:transparent;}
   .msg-del:active{color:var(--red);}
-
-  /* EMPTY / LOADING */
   .empty{text-align:center;padding:36px 20px;color:var(--faint);}
   .empty-icon{font-size:40px;margin-bottom:8px;}
   .empty-text{font-size:14px;line-height:1.6;}
   .loading-msgs{text-align:center;padding:28px;color:var(--muted);font-size:14px;}
-
-  /* SUMMARIZE */
   .sum-btn{width:100%;padding:16px;background:var(--blue);color:white;border:none;border-radius:12px;font-family:var(--font);font-size:16px;font-weight:600;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:8px;-webkit-tap-highlight-color:transparent;}
   .sum-btn:active{background:var(--blue-dark);}
   .sum-btn:disabled{background:var(--faint);cursor:not-allowed;}
-
-  /* RESULT */
   .result-card{background:var(--surface);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:12px;}
   .result-header{padding:13px 16px;background:#f0f9ff;border-bottom:1px solid #bae6fd;display:flex;justify-content:space-between;align-items:center;}
   .result-title{font-size:13px;font-weight:700;color:#0c4a6e;}
@@ -105,28 +81,24 @@
   @keyframes dots{0%{content:''}33%{content:'.'}66%{content:'..'}100%{content:'...'}}
   .copy-result-btn{width:100%;padding:11px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;font-family:var(--font);font-size:13px;color:#0369a1;cursor:pointer;margin-top:8px;}
   .copy-result-btn:active{background:#e0f2fe;}
+  .email-info{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#166534;line-height:1.6;}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="clock" id="clock">00:00</div>
     <h1>📥 Line Inbox</h1>
     <div class="sub">ทิ้งข้อความค้างไว้ได้เรื่อยๆ — sync ทุก device</div>
-    <div class="sync-badge loading" id="sync-badge">⟳ กำลังเชื่อมต่อ...</div>
+    <div class="sync-badge sync-load" id="sync-badge">⟳ กำลังเชื่อมต่อ...</div>
   </div>
 
-  <!-- SETUP BANNER -->
-  <div class="setup-banner" id="setup-banner">
-    <div class="setup-title">⚙️ ตั้งค่าครั้งแรก — ใส่ Apps Script URL</div>
-    <input class="setup-input" id="api-url-input" type="url" placeholder="https://script.google.com/macros/s/xxxxxxx/exec">
-    <button class="setup-btn" onclick="saveApiUrl()">บันทึกและเชื่อมต่อ</button>
-    <div class="setup-hint">วิธีได้ URL → ดูคู่มือที่ส่งมาพร้อมกันครับ</div>
+  <div class="email-info">
+    📧 <strong>Email จะส่งมาที่ nuccipao@gmail.com</strong><br>
+    ทุกวัน 09:00 และ 20:00 อัตโนมัติ — เปิด Email แล้ว copy วางใน Claude.ai ได้เลย
   </div>
 
-  <!-- REMINDER -->
   <div class="reminder hidden" id="reminder">
     <div class="reminder-icon" id="reminder-icon">🔔</div>
     <div class="reminder-text">
@@ -135,39 +107,34 @@
     </div>
   </div>
 
-  <!-- INPUT -->
   <div class="input-card">
     <div class="input-label">📲 วางข้อความจาก Line ที่นี่</div>
     <div class="input-row">
       <textarea id="new-msg" placeholder="Copy จาก Line → วางที่นี่ → กด +" rows="2"></textarea>
-      <button class="add-btn" id="add-btn" onclick="addMsg()" disabled>+</button>
+      <button class="add-btn" id="add-btn" onclick="addMsg()">+</button>
     </div>
   </div>
 
-  <!-- COUNTER -->
   <div class="counter-row">
     <div class="counter">ค้างอยู่: <strong id="count">0</strong> รายการ</div>
     <button class="clear-btn" onclick="clearAll()">🗑 ล้างทั้งหมด</button>
   </div>
 
-  <!-- INBOX -->
   <div class="inbox" id="inbox">
     <div class="loading-msgs">⟳ กำลังโหลด...</div>
   </div>
 
-  <!-- SUMMARIZE -->
   <button class="sum-btn" id="sum-btn" onclick="summarize()" disabled>
-    🤖 สรุปทั้งหมดด้วย Claude
+    📋 Copy Prompt ไปวางใน Claude.ai
   </button>
 
-  <!-- RESULT -->
   <div id="result-area"></div>
 
 </div>
 <script>
-// ── Config ────────────────────────────────────
-const URL_KEY = 'line_inbox_api_url';
-let API_URL = localStorage.getItem(URL_KEY) || '';
+// URL ใส่ไว้แล้ว ไม่ต้องแก้
+const API_URL = 'https://script.google.com/macros/s/AKfycbyUvghsjh_FCln7fQqsbjINzs6Nvo0f7LLheRY4B7HvDtljJMY72LAYDOokeCgIny2Bgw/exec';
+
 let msgs = [];
 
 // ── Clock & Reminder ─────────────────────────
@@ -182,11 +149,11 @@ updateClock();
 
 function checkReminder(h, m){
   const el = document.getElementById('reminder');
-  if((h===21&&m<30)||(h===9&&m<30)){
+  if((h===20&&m<30)||(h===9&&m<30)){
     if(msgs.length > 0){
-      document.getElementById('reminder-icon').textContent = h===21 ? '🌙' : '☀️';
-      document.getElementById('reminder-title').textContent = h===21 ? 'ได้เวลาสรุปก่อนนอน!' : 'สรุปเช้าก่อนเริ่มวัน!';
-      document.getElementById('reminder-body').textContent = ` มีข้อความค้าง ${msgs.length} รายการ — กดปุ่มสรุปด้านล่างได้เลยค่ะ`;
+      document.getElementById('reminder-icon').textContent = h===9 ? '☀️' : '🌙';
+      document.getElementById('reminder-title').textContent = h===9 ? 'Email สรุปเช้าถูกส่งแล้ว!' : 'Email สรุปเย็นถูกส่งแล้ว!';
+      document.getElementById('reminder-body').textContent = ' เปิด Gmail → copy ทั้งหมด → วางใน Claude.ai ได้เลยค่ะ';
       el.classList.remove('hidden');
     }
   } else {
@@ -194,62 +161,40 @@ function checkReminder(h, m){
   }
 }
 
-// ── Setup ─────────────────────────────────────
-function saveApiUrl(){
-  const val = document.getElementById('api-url-input').value.trim();
-  if(!val || !val.startsWith('https://')){alert('URL ไม่ถูกต้องครับ');return;}
-  API_URL = val;
-  localStorage.setItem(URL_KEY, API_URL);
-  document.getElementById('setup-banner').classList.add('hidden');
-  loadMsgs();
-}
-
-function checkSetup(){
-  if(!API_URL){
-    document.getElementById('setup-banner').classList.remove('hidden');
-    setSyncBadge('error', '⚠️ ยังไม่ได้ตั้งค่า');
-    document.getElementById('inbox').innerHTML = '<div class="empty"><div class="empty-icon">⚙️</div><div class="empty-text">ใส่ Apps Script URL ด้านบนก่อนนะคะ</div></div>';
-    return false;
-  }
-  document.getElementById('setup-banner').classList.add('hidden');
-  return true;
-}
-
 // ── Sync Badge ────────────────────────────────
-function setSyncBadge(state, text){
+function setBadge(state, text){
   const el = document.getElementById('sync-badge');
   el.className = 'sync-badge ' + state;
   el.textContent = text;
 }
 
-// ── API calls ─────────────────────────────────
-async function api(params){
-  const url = API_URL + '?' + new URLSearchParams(params);
-  const res = await fetch(url);
+// ── API — ใช้ GET ทั้งหมด เพื่อหลีกเลี่ยง CORS ──
+async function apiGet(params){
+  const url = API_URL + '?' + new URLSearchParams(params).toString();
+  const res = await fetch(url, {redirect:'follow'});
   return res.json();
 }
 
-async function apiPost(body){
-  const res = await fetch(API_URL, {method:'POST', body: JSON.stringify(body)});
+// สำหรับ add ใช้ GET พร้อม encode text
+async function apiAdd(text, time){
+  const params = new URLSearchParams({action:'add', text:text, time:time});
+  const url = API_URL + '?' + params.toString();
+  const res = await fetch(url, {redirect:'follow'});
   return res.json();
 }
 
 // ── Load ──────────────────────────────────────
 async function loadMsgs(){
-  if(!checkSetup()) return;
-  setSyncBadge('loading', '⟳ กำลังโหลด...');
+  setBadge('sync-load','⟳ กำลังโหลด...');
   try{
-    const data = await api({action:'list'});
+    const data = await apiGet({action:'list'});
     msgs = data.msgs || [];
     render();
-    setSyncBadge('', '✓ ซิงค์แล้ว · '+new Date().getHours()+':'+String(new Date().getMinutes()).padStart(2,'0'));
-    document.querySelector('.sync-badge').style.color = '#166534';
-    document.querySelector('.sync-badge').style.background = '#f0fdf4';
-    document.querySelector('.sync-badge').style.borderColor = '#bbf7d0';
-    document.getElementById('add-btn').disabled = false;
-    document.getElementById('sum-btn').disabled = msgs.length === 0;
+    const now = new Date();
+    setBadge('sync-ok','✓ ซิงค์แล้ว '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0'));
   } catch(e){
-    setSyncBadge('error', '⚠️ เชื่อมต่อไม่ได้');
+    setBadge('sync-err','⚠️ เชื่อมต่อไม่ได้');
+    document.getElementById('inbox').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">เชื่อมต่อไม่ได้<br>ลอง refresh หน้าใหม่</div></div>';
   }
 }
 
@@ -259,33 +204,29 @@ async function addMsg(){
   const text = ta.value.trim();
   if(!text) return;
   const btn = document.getElementById('add-btn');
-  btn.disabled = true;
-  btn.textContent = '...';
+  btn.disabled = true; btn.textContent = '...';
   const now = new Date();
   const time = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
   try{
-    await apiPost({action:'add', text, time});
+    await apiAdd(text, time);
     ta.value = ''; ta.style.height = '';
     await loadMsgs();
   } catch(e){
-    alert('บันทึกไม่ได้ครับ ลองใหม่อีกครั้ง');
+    alert('บันทึกไม่ได้ ลองใหม่ครับ');
   }
-  btn.disabled = false;
-  btn.textContent = '+';
+  btn.disabled = false; btn.textContent = '+';
 }
 
 async function deleteMsg(id){
-  try{
-    await api({action:'delete', id});
-    await loadMsgs();
-  } catch(e){ alert('ลบไม่ได้ครับ'); }
+  try{ await apiGet({action:'delete', id:id}); await loadMsgs(); }
+  catch(e){ alert('ลบไม่ได้ครับ'); }
 }
 
 async function clearAll(){
   if(!msgs.length) return;
-  if(!confirm(`ล้างข้อความทั้ง ${msgs.length} รายการ?`)) return;
+  if(!confirm('ล้างข้อความทั้ง '+msgs.length+' รายการ?')) return;
   try{
-    await api({action:'clear'});
+    await apiGet({action:'clear'});
     document.getElementById('result-area').innerHTML = '';
     await loadMsgs();
   } catch(e){ alert('ล้างไม่ได้ครับ'); }
@@ -302,20 +243,19 @@ function render(){
     inbox.innerHTML = '<div class="empty"><div class="empty-icon">💬</div><div class="empty-text">ยังไม่มีข้อความค้าง<br>Copy จาก Line แล้วกด + ได้เลย</div></div>';
     return;
   }
-  inbox.innerHTML = msgs.map((m,i) => `
-    <div class="msg-card">
-      <div class="msg-num">${msgs.length-i}</div>
-      <div class="msg-body">${escHtml(m.text)}</div>
-      <div class="msg-meta">
-        <div class="msg-time">${m.time||''}</div>
-        <div class="msg-date">${m.date||''}</div>
-        <button class="msg-del" onclick="deleteMsg('${m.id}')">×</button>
-      </div>
-    </div>`).join('');
+  inbox.innerHTML = msgs.map(function(m,i){
+    return '<div class="msg-card">'+
+      '<div class="msg-num">'+(msgs.length-i)+'</div>'+
+      '<div class="msg-body">'+escHtml(m.text)+'</div>'+
+      '<div class="msg-meta">'+
+        '<div class="msg-time">'+(m.time||'')+'</div>'+
+        '<div class="msg-date">'+(m.date||'')+'</div>'+
+        '<button class="msg-del" onclick="deleteMsg(\''+m.id+'\')">×</button>'+
+      '</div></div>';
+  }).join('');
 }
 
-// ── Auto-resize textarea ──────────────────────
-document.getElementById('new-msg').addEventListener('keydown', e=>{
+document.getElementById('new-msg').addEventListener('keydown', function(e){
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addMsg();}
 });
 document.getElementById('new-msg').addEventListener('input', function(){
@@ -323,84 +263,40 @@ document.getElementById('new-msg').addEventListener('input', function(){
   this.style.height=Math.min(this.scrollHeight,160)+'px';
 });
 
-// ── Summarize ─────────────────────────────────
-async function summarize(){
+// ── Copy Prompt ────────────────────────────────
+function summarize(){
   if(!msgs.length) return;
-  const btn = document.getElementById('sum-btn');
-  const area = document.getElementById('result-area');
-  btn.disabled = true;
-  area.innerHTML = '<div class="loading"><span class="dot-anim">🤖 Claude กำลังสรุป</span></div>';
-
   const now = new Date();
   const thDays=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
   const thMonths=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-  const dateStr=`${thDays[now.getDay()]} ${now.getDate()} ${thMonths[now.getMonth()]} ${now.getFullYear()+543}`;
+  const dateStr=thDays[now.getDay()]+' '+now.getDate()+' '+thMonths[now.getMonth()];
   const timeStr=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
 
-  const dump = msgs.slice().reverse().map((m,i)=>`[${i+1}] (${m.date||''} ${m.time||''}) ${m.text}`).join('\n\n');
+  const dump = msgs.slice().reverse().map(function(m,i){
+    return '['+(i+1)+'] ('+(m.date||'')+' '+(m.time||'')+') '+m.text;
+  }).join('\n\n');
 
-  const prompt=`คุณคือ Chief of Staff AI ของ VP Commercial & Revenue บริษัทค่ายเพลง 4 ค่าย 35 วง
-วันนี้: ${dateStr} เวลา ${timeStr} น.
+  const prompt =
+    'คุณคือ Chief of Staff AI ของ VP Commercial & Revenue บริษัทค่ายเพลง 4 ค่าย 35 วง\n'+
+    'วันนี้: '+dateStr+' '+timeStr+' น.\n\n'+
+    'ข้อความจาก Line ที่ยังค้างอยู่:\n\n'+dump+'\n\n'+
+    'สรุปเป็น Daily Brief:\n\n'+
+    '🔴 ต้องดำเนินการวันนี้\n'+
+    '🟡 ต้อง Follow Up ใน 3 วัน\n'+
+    '❓ ข้อมูลไม่ครบ ต้องถามใคร\n'+
+    '💰 Revenue / Deal Flags\n\n'+
+    'Rules: ภาษาไทย กระชับ | เรียงจาก urgent มากไปน้อย | หมวดที่ไม่มีข้อมูล เขียน "ไม่มี"';
 
-ด้านล่างคือข้อความจาก Line ที่ยังค้างอยู่ยังไม่ได้ตอบหรือดำเนินการ:
-
-${dump}
-
-ตอบเป็น JSON เท่านั้น ไม่มี markdown ไม่มี backtick:
-{"red":"🔴 ต้องดำเนินการวันนี้\\n- ...","yellow":"🟡 ต้อง Follow Up ใน 3 วัน\\n- ...","green":"🟢 รับทราบ ไม่ต้องทำอะไร\\n- ...","gray":"❓ ข้อมูลไม่ครบ ต้องถามใคร\\n- ...","purple":"💰 Revenue / Deal Flags\\n- ..."}
-
-Rules: ไม่แน่ใจ urgency จัด yellow ก่อน | ภาษาไทย กระชับ | หมวดที่ไม่มีข้อมูลใส่ "ไม่มี" | เรียงจาก urgent มากไปน้อย`;
-
-  try{
-    const res = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:prompt}]})
-    });
-    const data = await res.json();
-    const raw = data.content?.map(c=>c.text||'').join('').trim();
-    let parsed;
-    try{parsed=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){parsed=null;}
-
-    if(parsed){
-      area.innerHTML=`
-        <div class="result-card">
-          <div class="result-header">
-            <div class="result-title">📊 สรุปจาก Claude</div>
-            <div class="result-time-label">${dateStr} · ${timeStr}</div>
-          </div>
-          <div class="result-body">
-            <div class="block b-red"><div class="block-head">🔴 ต้องดำเนินการวันนี้</div><div class="block-content">${escHtml(parsed.red||'ไม่มี')}</div></div>
-            <div class="block b-yellow"><div class="block-head">🟡 ต้อง Follow Up ใน 3 วัน</div><div class="block-content">${escHtml(parsed.yellow||'ไม่มี')}</div></div>
-            <div class="block b-green"><div class="block-head">🟢 รับทราบ — ไม่ต้องทำอะไร</div><div class="block-content">${escHtml(parsed.green||'ไม่มี')}</div></div>
-            <div class="block b-gray"><div class="block-head">❓ ข้อมูลไม่ครบ</div><div class="block-content">${escHtml(parsed.gray||'ไม่มี')}</div></div>
-            <div class="block b-purple"><div class="block-head" style="color:#6b21a8;">💰 Revenue / Deal Flags</div><div class="block-content">${escHtml(parsed.purple||'ไม่มี')}</div></div>
-          </div>
-        </div>
-        <button class="copy-result-btn" onclick="copyResult()">📋 Copy สรุปนี้</button>`;
-      window._lastResult = parsed;
-    } else {
-      area.innerHTML=`<div class="result-card"><div class="result-body"><pre style="font-size:13px;white-space:pre-wrap;">${escHtml(raw)}</pre></div></div>`;
-    }
-  } catch(err){
-    area.innerHTML=`<div class="result-card"><div class="result-body" style="color:var(--red);font-size:13px;">เกิดข้อผิดพลาด: ${err.message}</div></div>`;
-  }
-  btn.disabled = msgs.length === 0;
-}
-
-function copyResult(){
-  const p = window._lastResult; if(!p) return;
-  const txt = [p.red,p.yellow,p.green,p.gray,p.purple].join('\n\n');
-  navigator.clipboard.writeText(txt).then(()=>{
-    const b = document.querySelector('.copy-result-btn');
-    b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy สรุปนี้',2000);
+  navigator.clipboard.writeText(prompt).then(function(){
+    const btn = document.getElementById('sum-btn');
+    btn.textContent = '✓ Copy แล้ว! เปิด Claude.ai วางได้เลย';
+    setTimeout(function(){ btn.textContent = '📋 Copy Prompt ไปวางใน Claude.ai'; }, 3000);
   });
 }
 
 // ── Init ──────────────────────────────────────
 loadMsgs();
-// Auto-refresh ทุก 30 วินาที
-setInterval(()=>{ if(API_URL) loadMsgs(); }, 30000);
+setInterval(function(){ loadMsgs(); }, 30000);
 </script>
 </body>
 </html>
